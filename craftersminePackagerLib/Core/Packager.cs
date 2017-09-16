@@ -56,7 +56,7 @@ namespace craftersmine.Packager.Lib.Core
         /// <exception cref="EndOfStreamException"></exception>
         public void Pack()
         {
-            PackingEventArgs _pea = new PackingEventArgs() { CurrentFileByte = 0, CurrentFilename = "HEAD", TotalAllBytes = 0, TotalFileByte = 0 };
+            PackingEventArgs _pea = new PackingEventArgs() { CurrentFileByte = 0, CurrentFilename = "", TotalAllBytes = 0, TotalFileByte = 0 };
             PackingEvent?.Invoke(this, _pea);
             PackingDoneEventArgs _pdea = new PackingDoneEventArgs() { IsSuccessful = false };
             string filepath = Path.Combine(Directory, Package.PackageName + ".cmpkg");
@@ -117,6 +117,7 @@ namespace craftersmine.Packager.Lib.Core
                     {
                         _pea.CurrentFilename = Package.Files[j].Filename;
                         _pea.TotalFileByte = Package.Files[j].Contents.LongLength;
+                        _pea.CurrentFileIndex = j;
                         PackingEvent?.Invoke(this, _pea);
                         for (long curbyte = 0; curbyte < Package.Files[j].Contents.LongLength; curbyte++)
                         {
@@ -133,7 +134,6 @@ namespace craftersmine.Packager.Lib.Core
             {
                 _pdea.InnerException = e;
                 PackingDoneEvent?.Invoke(this, _pdea);
-                throw e;
             }
         }
 
@@ -196,5 +196,7 @@ namespace craftersmine.Packager.Lib.Core
         /// Total size in bytes of all files
         /// </summary>
         public long TotalAllBytes { get; set; }
+
+        public int CurrentFileIndex { get; set; }
     }
 }
