@@ -180,7 +180,7 @@ namespace craftersmine.Packager.GUI
             if (perc < 100.0d)
             {
                 progressBar1.Value = (int)perc;
-                status.Text = "Current file: " + e.CurrentFilename + "         " + string.Format("{0:F1}%", perc) + "       Processing file: " + e.CurrentFileIndex.ToString() + " of " + totalFiles.ToString();
+                status.Text = "Current file: " + e.CurrentFilename + "         " + string.Format("{0:F1}%", perc) + "       Processing file: " + (e.CurrentFileIndex + 1).ToString() + " of " + totalFiles.ToString();
             }
             else perc = 100.0d;
         }
