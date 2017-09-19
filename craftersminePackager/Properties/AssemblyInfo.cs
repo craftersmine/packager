@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("craftersminePackager")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("craftersmine Packager Application")]
+[assembly: AssemblyDescription("Application for creating packages with GUI")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("craftersminePackager")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("craftersmine")]
+[assembly: AssemblyProduct("craftersmine Packager Application")]
+[assembly: AssemblyCopyright("Copyright © craftersmine 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
