@@ -47,8 +47,8 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.panel = new System.Windows.Forms.Panel();
-            this.status = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.status = new System.Windows.Forms.Label();
             this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -209,15 +209,6 @@
             this.panel.TabIndex = 10;
             this.panel.Visible = false;
             // 
-            // status
-            // 
-            this.status.AutoSize = true;
-            this.status.Location = new System.Drawing.Point(3, 3);
-            this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(46, 13);
-            this.status.TabIndex = 0;
-            this.status.Text = "{status}:";
-            // 
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(0, 19);
@@ -226,6 +217,15 @@
             this.progressBar1.Size = new System.Drawing.Size(825, 15);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 1;
+            // 
+            // status
+            // 
+            this.status.AutoSize = true;
+            this.status.Location = new System.Drawing.Point(3, 3);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(46, 13);
+            this.status.TabIndex = 0;
+            this.status.Text = "{status}:";
             // 
             // MainForm
             // 
@@ -244,6 +244,7 @@
             this.Controls.Add(this.addFile);
             this.Controls.Add(this.filesList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
