@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{45CC1299-B7FD-4D36-9B0E-18EAE373C898}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>craftersmine.Packager.Console</RootNamespace>
+    <RootNamespace>craftersmine.Packager.Cmd</RootNamespace>
     <AssemblyName>consolepackager</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgsMessages.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
