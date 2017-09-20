@@ -9,6 +9,9 @@ using craftersmine.Packager.Lib.Core.Exceptions;
 
 namespace craftersmine.Packager.Lib.Core
 {
+    /// <summary>
+    /// Represents an package contents analyzer. This class cannot be inherited
+    /// </summary>
     public sealed class Analyzer
     {        
         /// <summary>

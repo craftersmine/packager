@@ -196,7 +196,9 @@ namespace craftersmine.Packager.Lib.Core
         /// Total size in bytes of all files
         /// </summary>
         public long TotalAllBytes { get; set; }
-
+        /// <summary>
+        /// Current file index in array, starts from 0
+        /// </summary>
         public int CurrentFileIndex { get; set; }
     }
 }

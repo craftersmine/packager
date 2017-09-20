@@ -134,10 +134,13 @@ namespace craftersmine.Packager.Lib.Core
                                     Directory.CreateDirectory(DirectoryForExtracted);
                                 if (ByteArrayValidator.ValidateBytes(reader.ReadBytes(3), sep))
                                 {
+                                    int currflctr = 0;
                                     foreach (var fileInTable in _filetable)
                                     {
+                                        currflctr++;
                                         _eea.CurrentFilename = fileInTable.Key;
                                         _eea.TotalFileByte = fileInTable.Value;
+                                        _eea.CurrentFileIndex = currflctr;
                                         ExtractingEvent?.Invoke(this, _eea);
                                         using (BinaryWriter writer = new BinaryWriter(File.Create(Path.Combine(DirectoryForExtracted, fileInTable.Key))))
                                         {
@@ -206,5 +209,9 @@ namespace craftersmine.Packager.Lib.Core
         /// Total size in bytes of all files
         /// </summary>
         public long TotalAllBytes { get; set; }
+        /// <summary>
+        /// Current file index in array, starts from 0
+        /// </summary>
+        public int CurrentFileIndex { get; set; }
     }
 }
