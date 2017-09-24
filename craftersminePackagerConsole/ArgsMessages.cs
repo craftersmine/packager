@@ -11,7 +11,7 @@ namespace craftersmine.Packager.Cmd
         public const string Help = 
             "Creates a package from files\r\n" +
             "\r\n" +
-            "Usage: cmpkgrcmd -name=[PACKAGENAME] -files=[FILE1];[FILE2] -outdir=[OUTFILE]\r\n" +
+            "Usage: cmpkgrcmd --pack --name=[PACKAGENAME] --files=[FILE1];[FILE2] --outdir=[OUTFILE]\r\n" +
             "\r\n" +
             "Arguments:\r\n" +
             "\r\n" +
