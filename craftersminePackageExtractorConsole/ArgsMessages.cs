@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace craftersmine.Packager.Cmd
+namespace craftersmine.Packager.Extractor.Cmd
 {
     public sealed class ArgsMessages
     {
