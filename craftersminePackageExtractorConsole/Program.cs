@@ -38,6 +38,8 @@ namespace craftersmine.Packager.Extractor.Cmd
                     string dir = "";
                     if (_args.TryGetValue("-outdir", out dir) || _args.TryGetValue("o", out dir))
                     {
+                        PackageMetadata _package = Analyzer.AnalyzePackage(fileArgRet);
+                        _totalfiles = _package.PackageFiles.Length;
                         Lib.Core.Extractor _extr = new Lib.Core.Extractor(fileArgRet, dir);
                         _extr.ExtractingEvent += _extr_ExtractingEvent;
                         _extr.ExtractingDoneEvent += _extr_ExtractingDoneEvent;
@@ -141,7 +143,8 @@ namespace craftersmine.Packager.Extractor.Cmd
 
         private static void _extr_ExtractingEvent(object sender, ExtractingEventArgs e)
         {
-            curind = e.CurrentFileIndex + 1;
+            if (e.CurrentFileIndex + 1 != curfl)
+                curind = e.CurrentFileIndex + 1;
             curfln = e.CurrentFilename;
             double perc = 0.0d;
             if (e.CurrentFileByte > 0 && e.TotalAllBytes > 0 && e.TotalFileByte > 0)
@@ -149,6 +152,7 @@ namespace craftersmine.Packager.Extractor.Cmd
             curfl = e.CurrentFileIndex + e.CurrentFileIndex;
             Console.Write(whitespace);
             Console.SetCursorPosition(0, 5);
+
             Console.Write("Processing {0} of {1} file - Percentage: {2:F2}% Extracting file: {3}", curfl, _totalfiles, perc, e.CurrentFilename);
         }
     }
