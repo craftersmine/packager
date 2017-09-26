@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("craftersminePackageExtractorConsole")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("craftersmine Packager Extractor/Analyzer Console Application")]
+[assembly: AssemblyDescription("Application for extracting or analyzing packages without GUI")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("craftersminePackageExtractorConsole")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("craftersmine")]
+[assembly: AssemblyProduct("craftersmine Packager Extractor/Analyzer Console Application")]
+[assembly: AssemblyCopyright("Copyright © craftersmine 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
