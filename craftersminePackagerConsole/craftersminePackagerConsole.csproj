@@ -7,7 +7,7 @@
     <ProjectGuid>{45CC1299-B7FD-4D36-9B0E-18EAE373C898}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>craftersmine.Packager.Cmd</RootNamespace>
-    <AssemblyName>consolepackager</AssemblyName>
+    <AssemblyName>cmpkgrcmd</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -30,6 +30,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>packager_cmd.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,6 +57,9 @@
       <Project>{f24e9344-dc4f-4fbe-b2fd-f90cc39e1109}</Project>
       <Name>craftersminePackagerLib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packager_cmd.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
