@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CB6F780A-0E88-437C-9CB8-F64FC0376A88}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>craftersmine.Packager.Extractor.Console</RootNamespace>
-    <AssemblyName>extractorconsole</AssemblyName>
+    <RootNamespace>craftersmine.Packager.Extractor.Cmd</RootNamespace>
+    <AssemblyName>cmextrcmd</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

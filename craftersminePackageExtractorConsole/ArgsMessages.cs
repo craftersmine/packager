@@ -17,7 +17,7 @@ namespace craftersmine.Packager.Cmd
             "\r\n" +
             "  --extract - Creates package from files. Alias: -e\r\n" +
             "  --analyze - Analyzes package for including files. No need --outdir argument. Alias -a\r\n" +
-            "  --file    - Adds file in package. Splits files with semicolon \';\'. Alias: -f\r\n" +
+            "  --file    - Adds file in package. Alias: -f\r\n" +
             "  --outdir  - Sets a directory for output package file. Alias: -o\r\n" +
             "  --help    - Shows help. Alias: -h, -?\r\n";
     }
