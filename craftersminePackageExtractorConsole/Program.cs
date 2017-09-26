@@ -108,9 +108,9 @@ namespace craftersmine.Packager.Extractor.Cmd
                             else flsz = string.Format("{0:F2} KBytes", _flszk);
                         }
                         else flsz = _entry.Filesize.ToString() + " Bytes";
-                        Console.WriteLine(" Filename: {0} | Size: {1:F2}");
+                        Console.WriteLine(" Filename: {0} | Size: {1}", _entry.Filename, flsz);
                     }
-                    Console.WriteLine("\r\nAnalyze completed!");
+                    Console.WriteLine("\r\nAnalyze completed!\r\n");
                 }
                 else
                 {
