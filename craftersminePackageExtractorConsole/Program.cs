@@ -137,23 +137,18 @@ namespace craftersmine.Packager.Extractor.Cmd
 
         static int curfl = 1;
         static int curind = 0;
-        static string curfln = "";
 
         static string whitespace = "";
 
         private static void _extr_ExtractingEvent(object sender, ExtractingEventArgs e)
         {
-            if (e.CurrentFileIndex + 1 != curfl)
-                curind = e.CurrentFileIndex + 1;
-            curfln = e.CurrentFilename;
             double perc = 0.0d;
             if (e.CurrentFileByte > 0 && e.TotalAllBytes > 0 && e.TotalFileByte > 0)
                 perc = ((double)e.CurrentFileByte / e.TotalFileByte) * 100;
-            curfl = e.CurrentFileIndex + e.CurrentFileIndex;
             Console.Write(whitespace);
             Console.SetCursorPosition(0, 5);
 
-            Console.Write("Processing {0} of {1} file - Percentage: {2:F2}% Extracting file: {3}", curfl, _totalfiles, perc, e.CurrentFilename);
+            Console.Write("Processing {0} of {1} file - Percentage: {2:F2}% Extracting file: {3}", e.CurrentFileIndex + 1, _totalfiles, perc, e.CurrentFilename);
         }
     }
 }
