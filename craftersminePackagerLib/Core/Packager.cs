@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using JadBenAutho.Tools;
 
-namespace craftersmine.Packager.Lib.Core
+namespace craftersmine.Packager.Lib.Core.Version_1
 {
     /// <summary>
     /// Packager main class. This class cannot be inherited
@@ -30,7 +31,7 @@ namespace craftersmine.Packager.Lib.Core
 
         private PackageFile _package = null;
         private string _dir = "";
-
+        PackingEventArgs _pea = new PackingEventArgs() { CurrentFileByte = 0, CurrentFilename = "", TotalAllBytes = 0, TotalFileByte = 0 };
         /// <summary>
         /// Package file to build
         /// </summary>
@@ -56,7 +57,7 @@ namespace craftersmine.Packager.Lib.Core
         /// <exception cref="EndOfStreamException"></exception>
         public void Pack()
         {
-            PackingEventArgs _pea = new PackingEventArgs() { CurrentFileByte = 0, CurrentFilename = "", TotalAllBytes = 0, TotalFileByte = 0 };
+            
             PackingEvent?.Invoke(this, _pea);
             PackingDoneEventArgs _pdea = new PackingDoneEventArgs() { IsSuccessful = false };
             string filepath = Path.Combine(Directory, Package.PackageName + ".cmpkg");
@@ -103,11 +104,21 @@ namespace craftersmine.Packager.Lib.Core
                     //}
                     //writer.Write(new byte[] { 0xed, 0x0f, 0x11, 0xe0 });
 
+                    HuffmanAlgorithm shrinker = new HuffmanAlgorithm();
+                    shrinker.PercentCompleted += Shrinker_PercentCompleted;
+
+                    Dictionary<string, Stream> _files = new Dictionary<string, Stream>();
+
+                    for (int l = 0; l < Package.Files.Length; l++)
+                    {
+                        Stream _shrinked = shrinker.ShrinkWithProgress(new MemoryStream(Package.Files[l].Contents), new char[] { });
+                        _files.Add(Package.Files[l].Filename, _shrinked);
+                    }
 
                     for (int i = 0; i < Package.Files.Length; i++)
                     {
                         writer.Write(Package.Files[i].Filename + Package.Files[i].Extention);
-                        writer.Write(Package.Files[i].Contents.LongLength);
+                        writer.Write(_files[Package.Files[i].Filename].Length);
                         
                     }
 
@@ -116,14 +127,14 @@ namespace craftersmine.Packager.Lib.Core
                     for (int j = 0; j < Package.Files.Length; j++)
                     {
                         _pea.CurrentFilename = Package.Files[j].Filename;
-                        _pea.TotalFileByte = Package.Files[j].Contents.LongLength;
+                        _pea.TotalFileByte = _files[Package.Files[j].Filename].Length;
                         _pea.CurrentFileIndex = j;
                         PackingEvent?.Invoke(this, _pea);
-                        for (long curbyte = 0; curbyte < Package.Files[j].Contents.LongLength; curbyte++)
+                        for (long curbyte = 0; curbyte < _files[Package.Files[j].Filename].Length; curbyte++)
                         {
                             _pea.CurrentFileByte = curbyte;
                             PackingEvent?.Invoke(this, _pea);
-                            writer.Write(Package.Files[j].Contents[curbyte]);
+                            writer.Write(_files[Package.Files[j].Filename].ReadByte());
                         }
                     }
                 }
@@ -135,6 +146,13 @@ namespace craftersmine.Packager.Lib.Core
                 _pdea.InnerException = e;
                 PackingDoneEvent?.Invoke(this, _pdea);
             }
+        }
+
+        private void Shrinker_PercentCompleted()
+        {
+            _pea.CurrentStatus = PackingStatus.Shrinking;
+            _pea.ShrinkingProgress += 1;
+            PackingEvent?.Invoke(this, _pea);
         }
 
         /// <summary>
@@ -200,5 +218,14 @@ namespace craftersmine.Packager.Lib.Core
         /// Current file index in array, starts from 0
         /// </summary>
         public int CurrentFileIndex { get; set; }
+
+        public PackingStatus CurrentStatus { get; set; }
+        
+        public int ShrinkingProgress { get; set; }
+    }
+
+    public enum PackingStatus
+    {
+        Preparing, Shrinking, Writing
     }
 }
