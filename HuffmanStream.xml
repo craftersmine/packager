@@ -1,0 +1,509 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>huffmancompress</name>
+    </assembly>
+    <members>
+        <member name="T:JadBenAutho.Tools.WrongPasswordEventHandler">
+            <summary>
+            Handles attempt to extract archive that is protected with password,
+            by using wrong password.
+            </summary>
+        </member>
+        <member name="T:JadBenAutho.Tools.PercentCompletedEventHandler">
+            <summary>
+            Invoked from all xxxxWithProgress functions whenever another 1 percent
+            of the function is done.
+            </summary>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm">
+            <summary>
+            Implementing the Huffman shrinking algorithm.
+            This algorithm was ment to be highly fast efficient, it's supports
+            Data streams with size of up to 2^32 - 1 bytes.
+            </summary>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable">
+            <summary>
+            <c>FrequencyTable</c> build from bytes and their repeatition in the stream.
+            this is achieved by using  2 arrays with the of same size.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable.FoundBytes">
+            <summary>
+            Saves all the varies types of bytes (up to 256 ) found in a stream.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable.Frequency">
+            <summary>
+            Saves the amount of times each byte in the stream apears.
+            </summary>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm.TreeNode">
+            <summary>
+            This is a node that the <c>HuffmanTree</c> made of.
+            It's used to translate bytes to bits sequence when archiving,
+            and bits sequence to bytes when extracting.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.TreeNode.ByteValue">
+            <summary>
+            The Byte value of a leaf, it is relevant only when the node is actualy a leaf.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.TreeNode.Value">
+            <summary>
+            This is the frequency value of the node
+            </summary>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree">
+            <summary>
+            <c>HuffmanTree</c> is the iplementation of a Huffman algorithm tree.
+            It's used to translate bytes to bits sequence when archiving,
+            and bits sequence to bytes when extracting.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.Leafs">
+            <summary>
+            This array hold the value of a byte and it is as long as a frequency table.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.FT">
+            <summary>The frequency table to build the Huffman tree with.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.OrphanNodes">
+            <summary>
+            This holds nodes without parents;
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.RootNode">
+            <summary>
+            The root node in the tree to be build;
+            </summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.#ctor(JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable)">
+            <summary>Build a Huffman tree out of a frequency table.</summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.BuildTree">
+            <summary>
+            This function build a tree from the frequency table
+            </summary>
+            <returns>The root of the tree.</returns>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree.FindSmallestOrphanNodes(JadBenAutho.Tools.HuffmanAlgorithm.TreeNode@,JadBenAutho.Tools.HuffmanAlgorithm.TreeNode@)">
+            <summary>
+            Finds the smallest and the 2nd smallest value orphan nodes
+            and removes them them from the arraylist.
+            </summary>
+            <param name="Smallest">The smallest node in the <c>OrphanNodes</c> list.</param>
+            <param name="Small">The 2nd smallest node in the <c>OrphanNodes</c> list.</param>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack">
+            <summary>
+            This is a stack of 8 bits (1 byte)
+            uses to manipulate the bits of a stream(when been extracted or archived).
+            It's pushing and poping acts more like a queue then a stack.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.Container">
+            <summary>
+            The unit to write and read from a stream.
+            </summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.IsFull">
+            <summary>
+            Indicated if the stack unit is full with 8 bits.
+            </summary>
+            <returns>true if full, false if not.</returns>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.IsEmpty">
+            <summary>
+            Indicated if the stack unit is empty(0 bits).
+            </summary>
+            <returns>true if empty, false if not.</returns>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.NumOfBits">
+            <summary>
+            Get the number of bits, currently located in the stack.
+            </summary>
+            <returns>Number of bits located in the stack.</returns>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.Empty">
+            <summary>
+            This function removes all the bits from the stack.
+            </summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.PushFlag(System.Boolean)">
+            <summary>
+            Push a bit to the left of the stack (Most significant bit).
+            </summary>
+            <remarks>The stack must have at least 1 free bit slot.</remarks>
+            <param name="Flag">The bit to add the stack(true = 1, false = 0)</param>
+            <exception cref="T:System.Exception">
+            When attempting to push a bit from a full stack.
+            </exception>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.PopFlag">
+            <summary>
+            Pops a bit from the right of the stack (Least significant bit).
+            </summary>
+            <returns></returns>
+            <remarks>The stack must'nt be empty this function called.</remarks>
+            <exception cref="T:System.Exception">
+            When attempting to pop a bit from an empty stack.
+            </exception>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BitsStack.FillStack(System.Byte)">
+            <summary>
+            Fill the stack with 8 bits. If the stack is full, the given byte will
+            override the old bits.
+            </summary>
+            <param name="Data">Byte(8 bits) to put in the current stack.</param>
+        </member>
+        <member name="T:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader">
+            <summary>
+            This is the file/stream header that attached to each archived file or stream at the begining.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.version">
+            <summary>The version of the archiving code.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.FT">
+            <summary>The frequency table of the archived data.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.OriginalSize">
+            <summary>The size of the data before archiving it.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.ComplementsBits">
+            <summary>Number of extra bits added to the last  byte of the data.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.Key">
+            <summary>Security key to the archived stream\file.</summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.FileHeader.#ctor(System.Byte,JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable,System.Int64@,System.Byte,System.UInt16)">
+            <summary>
+            Builds a new header that holds info about an archived file\stream.
+            </summary>
+            <param name="ver">The version of the archiving program.</param>
+            <param name="T">The frequency table to rebuild the file from.</param>
+            <param name="OrgSize">The size of the file\stream before archiving it.</param>
+            <param name="BitsToFill">
+            Number of extra bits added to the last byte in the archived file.
+            </param>
+            <param name="PasswordKey">Key to gain access to the file\stream later.</param>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.ByteLocation">
+            <summary>
+            This is a temporary array to sign  where it's location in the 
+            <c>BuildFrequencyTable</c> function (the value is the location.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.IsByteExist">
+            <summary>
+            This array indicated if the byte with the value that correspond
+            to the index of the array (0-255) was found or not in the stream.
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.BytesList">
+            <summary>Holds the bytes that where found.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.AmountList">
+            <summary>Holds the amount of repetitions of byte.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.BitsList">
+            <summary>I use this list to write the reverse path to a Byte.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.BinFormat">
+            <summary>Uses to write and read the Headers to and from a stream.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.Stack">
+            <summary>This stack is used to write extracted and shrinked bytes.</summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.OnWrongPassword">
+            <summary>
+            Invoked whenever attempt to extract password protected file\stream, by
+            using the wrong password. In case this event isn't handaled by the users
+            an exeption will be thrown(in password error case).
+            </summary>
+        </member>
+        <member name="F:JadBenAutho.Tools.HuffmanAlgorithm.OnPercentCompleted">
+            <summary>
+            Invoked from all xxxxWithProgress functions whenever another 1 percent
+            of the function is done.
+            </summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.Shrink(System.IO.Stream,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and shrinking the stream data.
+            </summary>
+            <param name="Data">
+            The data streem to shrink, it will start shrinking from the position of the given
+            stream as it was given and in the end of the function it's position
+            won't be at the end of the stream and it won't be closed.
+            </param>
+            <param name="Password">
+            A password to add to the archive, to mark as "password less" assign null instead.
+            </param>
+            <returns>The archived stream, positioned at start.</returns>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.ShrinkWithProgress(System.IO.Stream,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and shrinking the stream data.
+            This function version, calls the PercentComplete event handler
+            When anothe 1 percent compleated.
+            </summary>
+            <param name="Data">
+            The data streem to shrink, shrinking starts from the position of the given stream
+            as it was given and in the end of the function it's position won't be at the end
+            of the stream and it won't be closed.
+            </param>
+            <param name="Password">
+            A password to add to the archive, to mark as "password less" assign null instead.
+            </param>
+            <returns>The archived stream, positioned at start.</returns>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.Shrink(System.IO.Stream,System.String,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and shrinking the stream data to a new file.
+            into a file.
+            </summary>
+            <param name="Data">
+            The data streem to shrink, it will start shrinking from the position of the given
+            stream as it was given and in the end of the function it's position
+            won't be at the end of the stream and it won't be closed.
+            </param>
+            <param name="OutputFile">Path to a file to same the shrinked data in.</param>
+            <param name="Password">
+            A passward to add to the archive, to mark as "passward less" assign null instead.
+            </param>
+            <returns>The expanded stream, positioned at start.</returns>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.ShrinkWithProgress(System.IO.Stream,System.String,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and shrinking the stream data to a new file.
+            into a file.
+            This function version, calls the PercentComplete event handler
+            When anothe 1 percent compleated.
+            </summary>
+            <param name="Data">
+            The data streem to shrink, shrinking starts from the position of the given stream
+            as it was given and in the end of the function it's position won't be at the end
+            of the stream and it won't be closed.
+            </param>
+            <param name="OutputFile">Path to a file to same the shrinked data in.</param>
+            <param name="Password">
+            A passward to add to the archive, to mark as "passward less" assign null instead.
+            </param>
+            <returns>The expanded stream, positioned at the start.</returns>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.Extract(System.IO.Stream,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and extract the archive.
+            </summary>
+            <param name="Data">The data streem to shrink</param>
+            <param name="Password">
+            A Key to open the archive with, to mark as "passward less" assign null instead.
+            </param>
+            <returns>
+            The data stream to extract, but if wrong password error occur
+            and the <c>WrongPassword</c> event is handeled, it's returns null.
+            </returns>
+            <exception cref="T:System.Exception">
+            On attempt to extract data that wasn't coded with the <c>HuffmanAlgorithm</c> class, 
+            Or on attempt to extract a password protected stream\file with the wrong password.
+            (If the <c>WrongPassword</c> event is been handeled by the user the 2nd exception is'nt
+            relevant).
+            </exception>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero. The given stream must be archived stream of the right type.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.ExtractWithProgress(System.IO.Stream,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and extract the archive.
+            This function version, calls the PercentComplete event handler
+            When anothe 1 percent compleated.
+            </summary>
+            <param name="Data">The data streem to shrink</param>
+            <param name="Password">
+            A Key to open the archive with, to mark as "passward less" assign null instead.
+            </param>
+            <returns>
+            The data stream to extract, but if wrong password error occur
+            and the <c>WrongPassword</c> event is handeled, it's returns null.
+            </returns>
+            <exception cref="T:System.Exception">
+            On attempt to extract data that wasn't coded with the <c>HuffmanAlgorithm</c> class, 
+            Or on attempt to extract a password protected stream\file with the wrong password.
+            (If the <c>WrongPassword</c> event is been handeled by the user the 2nd exception is'nt
+            relevant).
+            </exception>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero. The given stream must be archived stream of the right type.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.Extract(System.IO.Stream,System.String,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and extract the archive to a new file.
+            </summary>
+            <param name="Data">The data streem to shrink</param>
+            <param name="OutputFile">Path to to save the extracted data.</param>
+            <param name="Password">
+            A Key to open the archive with, to mark as "passward less" assign null instead.
+            </param>
+            <returns>
+            flag that indicates if extraction went well or not: true = successful,
+            false = wrong password error occured (the WrongPassword event will take place). 
+            </returns>
+            <exception cref="T:System.Exception">
+            On attempt to extract data that wasn't coded with the <c>HuffmanAlgorithm</c> class, 
+            Or on attempt to extract a password protected stream\file with the wrong password.
+            (If the <c>WrongPassword</c> event is been handeled by the user the 2nd exception is'nt
+            relevant).
+            </exception>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero. The given stream must be archived stream of the right type.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.ExtractWithProgress(System.IO.Stream,System.String,System.Char[])">
+            <summary>
+            Build a frequency table and Huffman tree and extract the archive to a new file.
+            This function version, calls the PercentComplete event handler
+            When anothe 1 percent compleated.
+            </summary>
+            <param name="Data">The data streem to shrink</param>
+            <param name="OutputFile">Path to to save the extracted data.</param>
+            <param name="Password">
+            A Key to open the archive with, to mark as "passward less" assign null instead.
+            </param>
+            <returns>
+            flag that indicates if extraction went well or not: true = successful,
+            false = wrong password error occured (the WrongPassword event will take place). 
+            </returns>
+            <exception cref="T:System.Exception">
+            On attempt to extract data that wasn't coded with the <c>HuffmanAlgorithm</c> class, 
+            Or on attempt to extract a password protected stream\file with the wrong password.
+            (If the <c>WrongPassword</c> event is been handeled by the user the 2nd exception is'nt
+            relevant).
+            </exception>
+            <remarks>
+            The given stream must be readable, seekable and it's length
+            must exceed zero. The given stream must be archived stream of the right type.
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.IsArchivedStream(System.IO.Stream)">
+            <summary>
+            Checks if a data stream is archived.
+            </summary>
+            <param name="Data">The stream to test.</param>
+            <returns>true if the stream is archive, false if not.</returns>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.IsPasswardProtectedStream(System.IO.Stream)">
+            <summary>
+            Checks if a given archived data stream is password protected.
+            </summary>
+            <param name="Data">Archived stream to test.</param>
+            <returns>true if the stream is password protected, false if not.</returns>
+            <exception cref="T:System.Exception">
+            When the given stream isn't correct Huffman archived stream or has been corrupted.
+            </exception>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.GetArchivingRatio(System.IO.Stream)">
+            <summary>
+            This function calculates the the archiving ratio of a given archived stream. 
+            </summary>
+            <param name="Data">Archived stream to calculate archiving ratio to.</param>
+            <returns>The archiving ratio.</returns>
+            <exception cref="T:System.Exception">
+            When the given stream isn't correct Huffman archived stream or has been corrupted.
+            </exception>
+        </member>
+        <member name="E:JadBenAutho.Tools.HuffmanAlgorithm.WrongPassword">
+            <summary>
+            This is Asynchronic event and accures when the <c>Extract</c> function returns
+            on wrong password error.
+            Invoked whenever attempt to extract password protected file\stream, by
+            using the wrong password(Fatal error). In case this event isn't handaled by the users
+            an exeption will be thrown(in password error case).
+            </summary>
+        </member>
+        <member name="E:JadBenAutho.Tools.HuffmanAlgorithm.PercentCompleted">
+            <summary>
+            This is Asynchronic event and invoked only from xxxxWithProgress functions.
+            Invoked whenever another 1 percent of the function is done.
+            </summary>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.BuildFrequencyTable(System.IO.Stream)">
+            <summary>
+            Scanning for repeated bytes and according to them build frequency table.
+            </summary>
+            <param name="DataSource">The stream to build <c>FrequencyTable</c> for.</param>
+            <returns>The generated frequency table.</returns>
+            <remarks>
+            DataSource must be readable and seekable stream.
+            Don't try to extract somthing smaller then 415 bytes(it's not worth it)
+            </remarks>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.PasswordGen(System.Char[])">
+            <summary>
+            This function takes a password cstring and converts it to a ushort number
+            that's fit the header of a shrinked file.
+            </summary>
+            <param name="Password">
+            Password to a shrinked file (8 chars tops), is it's null, no password will
+            take place in the file (zero value).
+            </param>
+            <returns>A numeric representation of the given password.</returns>
+            <exception cref="T:System.Exception">
+            When a given password is longer then 8 characters.
+            </exception>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.SortArrays(System.UInt32[],System.Byte[],System.Int16)">
+            <summary>
+            Bouble sort <c>FrequencyTable</c>( according frequency level )
+            and making the same changes on the corresponding array.
+            </summary>
+            <param name="SortTarget">The array to sort by.</param>
+            <param name="TweenArray">
+            The array that will take the same swaping as the target array.
+            </param>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.WriteHeader(System.IO.Stream,JadBenAutho.Tools.HuffmanAlgorithm.FrequencyTable,System.Int64,System.Byte,System.Byte,System.Char[])">
+            <summary>
+            Write a header to the stream. This header is vital when extracting the data.
+            </summary>
+            <param name="St">The output stream.</param>
+            <param name="FT">The frequency table of the data.</param>
+            <param name="OriginalSize">The original of the data before shrinking.</param>
+            <param name="version">The version of the shrinking code.</param>
+            <param name="ComplementsBits">Number of extra bits added to the last byte of the data.</param>
+            <param name="Password">A key to gain access to the archived file\stream.</param>
+        </member>
+        <member name="M:JadBenAutho.Tools.HuffmanAlgorithm.GetComplementsBits(JadBenAutho.Tools.HuffmanAlgorithm.HuffmanTree)">
+            <summary>
+            Calculates the amount of complements bits, needed for the last byte writing.
+            </summary>
+            <param name="HT">The huffman tree of the stream to be archived.</param>
+            <returns>Amount of complements bits</returns>
+        </member>
+    </members>
+</doc>
