@@ -54,7 +54,6 @@
     <Compile Include="Core\Exceptions\InvalidVersionException.cs" />
     <Compile Include="Core\PackageEntry.cs" />
     <Compile Include="Core\PackageFile.cs" />
-    <Compile Include="Core\PackagerDeveloping.cs" />
     <Compile Include="Core\PackagerV1.cs" />
     <Compile Include="Core\PackageVersions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
