@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace craftersmine.Packager.Lib.Core.Version1
+namespace craftersmine.Packager.Lib.Core
 {
     /// <summary>
     /// Packager main class. This class cannot be inherited
     /// </summary>
     [Obsolete]
-    public sealed class PackagerV1
+    public sealed class Packager
     {
         /// <summary>
         /// Initialize packager class instance
@@ -19,7 +19,7 @@ namespace craftersmine.Packager.Lib.Core.Version1
         /// <param name="directory">Directory where output package will be stored</param>
         /// <param name="package">Package to build</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public PackagerV1(string directory, PackageFile package)
+        public Packager(string directory, PackageFile package)
         {
             if (package != null)
                 Package = package;

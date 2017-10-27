@@ -288,3 +288,5 @@ __pycache__/
 *.xsd.cs
 
 testlibapp/*
+
+craftersminePackagerLib/Core/PackagerDeveloping.cs
