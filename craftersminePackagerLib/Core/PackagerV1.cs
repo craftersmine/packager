@@ -10,7 +10,7 @@ namespace craftersmine.Packager.Lib.Core
     /// <summary>
     /// Packager main class. This class cannot be inherited
     /// </summary>
-    [Obsolete]
+    //[Obsolete]
     public sealed class Packager
     {
         /// <summary>
