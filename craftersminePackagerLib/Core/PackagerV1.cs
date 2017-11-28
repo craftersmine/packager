@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace craftersmine.Packager.Lib.Core
+namespace craftersmine.Packager.Lib.Core.OldVersions.V1
 {
     /// <summary>
     /// Packager main class. This class cannot be inherited
     /// </summary>
-    //[Obsolete]
+    [Obsolete]
     public sealed class Packager
     {
         /// <summary>
