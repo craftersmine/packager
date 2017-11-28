@@ -174,15 +174,15 @@ namespace craftersmine.Packager.GUI
 
         private void buildProcessing(PackingEventArgs e)
         {
-            double perc = 0.0d;
-            if (e.CurrentFileByte > 0 && e.TotalAllBytes > 0 && e.TotalFileByte > 0)
-                perc = ((double)e.CurrentFileByte / e.TotalFileByte) * 100.0d;
-            if (perc < 100.0d)
-            {
-                progressBar1.Value = (int)perc;
-                status.Text = "Current file: " + e.CurrentFilename + "         " + string.Format("{0:F1}%", perc) + "       Processing file: " + (e.CurrentFileIndex + 1).ToString() + " of " + totalFiles.ToString();
-            }
-            else perc = 100.0d;
+            //double perc = 0.0d;
+            //if (e.CurrentFileByte > 0 && e.TotalAllBytes > 0 && e.TotalFileByte > 0)
+            //    perc = ((double)e.CurrentFileByte / e.TotalFileByte) * 100.0d;
+            //if (perc < 100.0d)
+            //{
+            progressBar1.Value = e.PackingPercentage;
+            status.Text = "Current file: " + e.CurrentFilename + "         " + string.Format("{0:F1}%", e.PackingPercentage) + "       Processing file: " + (e.CurrentFileIndex + 1).ToString() + " of " + totalFiles.ToString();
+            //}
+            //else perc = 100.0d;
         }
     }
 }
