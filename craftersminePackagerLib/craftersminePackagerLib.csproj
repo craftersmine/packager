@@ -54,9 +54,10 @@
     <Compile Include="Core\Exceptions\InvalidVersionException.cs" />
     <Compile Include="Core\PackageEntry.cs" />
     <Compile Include="Core\PackageFile.cs" />
+    <Compile Include="Core\PackagerV2.cs" />
     <Compile Include="Core\PackagerV1.cs" />
     <Compile Include="Core\PackageVersions.cs" />
-    <Compile Include="OnDemandReader.cs" />
+    <Compile Include="Core\OnDemandReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
