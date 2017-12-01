@@ -12,5 +12,6 @@ namespace craftersmine.Packager.Lib.Core
     internal sealed class PackageVersions
     {
         public const byte Version1 = 0x01;
+        public const byte Version2 = 0x02;
     }
 }
