@@ -78,7 +78,7 @@ namespace craftersmine.Packager.Lib.Core
                 PackingEvent?.Invoke(this, _pea);
                 using (BinaryWriter writer = new BinaryWriter(File.Create(filepath)))
                 {
-                    writer.Write(new byte[] { 0x00, 0x01, 0xc7, 0x56, 0x43, 0x4d, 0x50, 0x4b, 0x47, 0x00 });
+                    writer.Write(new byte[] { 0x00, 0x02, 0xc7, 0x56, 0x43, 0x4d, 0x50, 0x4b, 0x47, 0x00 });
                     writer.Write(Package.PackageName);
                     //writer.Write(new byte[] { 0xcd, 0xb0 });
                     writer.Write(Package.PackageCreationTime.ToBinary());
