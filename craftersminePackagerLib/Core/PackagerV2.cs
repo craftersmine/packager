@@ -100,10 +100,9 @@ namespace craftersmine.Packager.Lib.Core
                         _pea.CurrentFilename = Package.Files[j].Filename;
                         _pea.TotalFileByte = Package.Files[j].Contents.LongLength;
                         _pea.CurrentFileIndex = j;
-                        PackingEvent?.Invoke(this, _pea);
                         writer.BaseStream.WriteAsync(Package.Files[j].Contents, 0, (int)Package.Files[j].Contents.LongLength);
                         _pea.PackingPercentage = (int)(((double)writer.BaseStream.Position / _totalBytesWithMeta) * 100.0d);
-                        PackingEvent(this, _pea);
+                        PackingEvent?.Invoke(this, _pea);
                     }
                 }
                 _pdea.IsSuccessful = true;
