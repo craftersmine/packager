@@ -110,6 +110,7 @@ namespace craftersmine.Packager.Lib.Core
                     byte prehead = reader.ReadByte();
                     byte version = reader.ReadByte();
                     byte[] header = reader.ReadBytes(8);
+                    byte[] sep = new byte[] { 0x1f, 0x1f, 0xfd };
                     if (prehead == prehd && ByteArrayValidator.ValidateBytes(head, header))
                     {
                         switch (version)
@@ -118,7 +119,6 @@ namespace craftersmine.Packager.Lib.Core
                                 string packageNameString = reader.ReadString();
                                 DateTime packageCreationTime = DateTime.FromBinary(reader.ReadInt64());
                                 int filesTotal = reader.ReadInt32();
-                                byte[] sep = new byte[] { 0x1f, 0x1f, 0xfd };
                                 Dictionary<string, long> _filetable = new Dictionary<string, long>();
                                 long _totalallBytes = 0;
                                 for (int i = 0; i < filesTotal; i++)
@@ -150,6 +150,51 @@ namespace craftersmine.Packager.Lib.Core
                                                 ExtractingEvent?.Invoke(this, _eea);
                                                 writer.Write(reader.ReadByte());
                                             }
+                                        }
+                                    }
+                                }
+                                else throw new PackageCorruptedException();
+                                _edea.IsSuccessful = true;
+                                ExtractingDoneEvent?.Invoke(this, _edea);
+                                break;
+                            case PackageVersions.Version2:
+                                _eea.ExtractingPercentage = 0;
+                                long _totalBytesWithMeta = 0;
+                                string packageNameString2 = reader.ReadString();
+                                DateTime packageCreationTime2 = DateTime.FromBinary(reader.ReadInt64());
+                                int filesTotal2 = reader.ReadInt32();
+                                Dictionary<string, long> _filetable2 = new Dictionary<string, long>();
+                                long _totalallBytes2 = 0;
+                                for (int i = 0; i < filesTotal2; i++)
+                                {
+                                    string filename = reader.ReadString();
+                                    long filesize = reader.ReadInt64();
+                                    _totalallBytes2 += filesize;
+                                    _filetable2.Add(filename, filesize);
+                                }
+                                _totalBytesWithMeta = reader.BaseStream.Position + _totalallBytes2;
+                                _eea.TotalAllBytes = _totalallBytes2;
+                                ExtractingEvent?.Invoke(this, _eea);
+                                if (!Directory.Exists(DirectoryForExtracted))
+                                    Directory.CreateDirectory(DirectoryForExtracted);
+                                if (ByteArrayValidator.ValidateBytes(reader.ReadBytes(3), sep))
+                                {
+                                    int currflctr = 0;
+                                    foreach (var fileInTable in _filetable2)
+                                    {
+                                        currflctr++;
+                                        _eea.CurrentFilename = fileInTable.Key;
+                                        _eea.TotalFileByte = fileInTable.Value;
+                                        _eea.CurrentFileIndex = currflctr;
+                                        ExtractingEvent?.Invoke(this, _eea);
+                                        using (BinaryWriter writer = new BinaryWriter(File.Create(Path.Combine(DirectoryForExtracted, fileInTable.Key))))
+                                        {
+                                            _eea.CurrentFilename = fileInTable.Key;
+                                            _eea.TotalFileByte = fileInTable.Value;
+                                            _eea.CurrentFileIndex = currflctr;
+                                            writer.BaseStream.Write(reader.ReadBytes((int)fileInTable.Value), 0, (int)fileInTable.Value);
+                                            _eea.ExtractingPercentage = (int)(((double)reader.BaseStream.Position / _totalBytesWithMeta) * 100.0d);
+                                            ExtractingEvent?.Invoke(this, _eea);
                                         }
                                     }
                                 }
@@ -213,5 +258,7 @@ namespace craftersmine.Packager.Lib.Core
         /// Current file index in array, starts from 0
         /// </summary>
         public int CurrentFileIndex { get; set; }
+
+        public int ExtractingPercentage { get; set; }
     }
 }
