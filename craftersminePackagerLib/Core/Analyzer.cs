@@ -58,6 +58,22 @@ namespace craftersmine.Packager.Lib.Core
                             }
                             PackageMetadata _meta = new PackageMetadata(packageNameString, _files.ToArray(), packageCreationTime, version);
                             return _meta;
+                        case PackageVersions.Version2:
+                            string packageNameString1 = reader.ReadString();
+                            DateTime packageCreationTime1 = DateTime.FromBinary(reader.ReadInt64());
+                            int filesTotal1 = reader.ReadInt32();
+                            byte[] sep1 = new byte[] { 0x1f, 0x1f, 0xfd };
+                            long _totalallBytes1 = 0;
+                            List<PackageFileWithoutData> _files1 = new List<PackageFileWithoutData>();
+                            for (int i = 0; i < filesTotal1; i++)
+                            {
+                                string filename = reader.ReadString();
+                                long filesize = reader.ReadInt64();
+                                _totalallBytes1 += filesize;
+                                _files1.Add(new PackageFileWithoutData(filename, filesize));
+                            }
+                            PackageMetadata _meta1 = new PackageMetadata(packageNameString1, _files1.ToArray(), packageCreationTime1, version);
+                            return _meta1;
                         default:
                             throw new InvalidVersionException(version);
                     }
