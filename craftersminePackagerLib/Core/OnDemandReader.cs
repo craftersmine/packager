@@ -78,6 +78,41 @@ namespace craftersmine.Packager.Lib.Core
                             }
                             else file.AddRange(reader.ReadBytes((int)_packageMetadata.PackageFiles[fileId].Filesize));
                             break;
+                        case PackageVersions.Version2:
+                            string packageNameString1 = reader.ReadString();
+                            DateTime packageCreationTime1 = DateTime.FromBinary(reader.ReadInt64());
+                            int filesTotal1 = reader.ReadInt32();
+                            byte[] sep1 = new byte[] { 0x1f, 0x1f, 0xfd };
+                            long _toSeek1 = 3;
+                            int fileId1 = 0;
+                            for (int i = 0; i < filesTotal1; i++)
+                            {
+                                string filename_ = reader.ReadString();
+                                long filesize = reader.ReadInt64();
+                            }
+                            for (int i = 0; i < _packageMetadata.PackageFiles.Length; i++)
+                            {
+                                fileId1 = i;
+                                if (filename != _packageMetadata.PackageFiles[i].Filename)
+                                    _toSeek1 += _packageMetadata.PackageFiles[i].Filesize;
+                                else break;
+                            }
+                            reader.BaseStream.Seek(_toSeek1, SeekOrigin.Current);
+                            if (_packageMetadata.PackageFiles[fileId1].Filesize > int.MaxValue)
+                            {
+                                int chunkCount = (int)(_packageMetadata.PackageFiles[fileId1].Filesize / int.MaxValue);
+                                for (int j = 0; j < chunkCount; j++)
+                                {
+                                    byte[] buffer = reader.ReadBytes(int.MaxValue);
+                                    fileChunks.Add(buffer);
+                                }
+                                foreach (var chunk in fileChunks)
+                                {
+                                    file.AddRange(chunk);
+                                }
+                            }
+                            else file.AddRange(reader.ReadBytes((int)_packageMetadata.PackageFiles[fileId1].Filesize));
+                            break;
                         default:
                             throw new InvalidVersionException(version);
                     }
@@ -100,7 +135,7 @@ namespace craftersmine.Packager.Lib.Core
         public string ReadText(string filename)
         {
             byte[] file = ReadBytes(filename);
-            string fileStr = Encoding.UTF8.GetString(file);
+            string fileStr = Encoding.Default.GetString(file);
             return fileStr;
         }
 
