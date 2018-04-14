@@ -55,12 +55,12 @@ namespace craftersmine.Packager.Lib.Core
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         /// <exception cref="ObjectDisposedException"></exception>
         /// <exception cref="EndOfStreamException"></exception>
-        public void Pack(int chunkSize = 4096)
+        public void Pack(int chunkSize = 4096, string customExtention = "cmpkg")
         {
             PackingEventArgs _pea = new PackingEventArgs() { CurrentFileByte = 0, CurrentFilename = "", TotalAllBytes = 0, TotalFileByte = 0 };
             PackingEvent?.Invoke(this, _pea);
             PackingDoneEventArgs _pdea = new PackingDoneEventArgs() { IsSuccessful = false };
-            string filepath = Path.Combine(Directory, Package.PackageName + ".cmpkg");
+            string filepath = Path.Combine(Directory, Package.PackageName + "." + customExtention);
             try
             {
                 if (!System.IO.Directory.Exists(Directory))
