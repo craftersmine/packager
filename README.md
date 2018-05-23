@@ -1,7 +1,4 @@
 # craftersmine packager
-Build status:
-
-[![Build Status](http://craftersmine.ddns.net:8080/job/craftersmine%20packager/badge/icon)](http://craftersmine.ddns.net:8080/job/craftersmine%20packager/) 
 
 ## Description
 craftersmine packager library - gives you a tool for bundle thousands of small files in one bundle by developers in their applications. Also it can be used by users to pack small files into one for faster copy/read.
