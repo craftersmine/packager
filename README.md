@@ -11,4 +11,4 @@ All releases is deployed at this [page](https://github.com/craftersmine/packager
 
 ## Quick Links
 * [craftersmine packager Wiki](https://github.com/craftersmine/packager/wiki)
-* [Getting Started]()
+* [Getting Started](https://github.com/craftersmine/packager/wiki/Getting-Started)
